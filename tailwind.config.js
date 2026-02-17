@@ -12,7 +12,7 @@ export default {
       colors: {
         beige: '#DFD9D0',
         taupe: '#B4A79D',
-        brown: '#8B7E74'
+        brown: '#989086'
       }
     },
   },
