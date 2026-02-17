@@ -5,32 +5,29 @@ import LagreeFitness from '../components/LagreeFitness.astro';
 
 <Layout>
 	<main class="min-h-screen w-full">
-			<!-- Header Section -->
-			<div class="bg-[#989086] py-6">
+			<!-- Header Section (reduced height) -->
+			<div class="bg-[#989086] py-2 md:py-3">
 		      <div class="text-center">
-		        <h1 class="text-5xl md:text-6xl tracking-[0.4em] font-light text-white mb-1">PILATES</h1>
-		        <p class="text-sm tracking-[0.4em] font-light text-white">MALÚ PÉREZ</p>
+		        <h1 class="text-3xl md:text-4xl tracking-[0.4em] font-light text-white mb-0">PILATES</h1>
+		        <p class="text-xs md:text-sm tracking-[0.4em] font-light text-white mt-0">MALÚ PÉREZ</p>
 		      </div>
 		    </div>
 
-			<!-- Hero Section with Background Image (image contains its own text) -->
-			<section class="relative w-full flex flex-col justify-between">
-			  <img src="/fonts/Copia de logo malu perez mas lagree.jpg" alt="Hero" class="w-full h-auto object-contain max-h-[80vh]" />
+			<!-- Hero Section with Background Image (imagen responsiva, siempre visible) -->
+			<section class="relative w-full">
+				<div class="w-full hero-wrapper">
+					<img src="/fonts/Copia de logo malu perez mas lagree.jpg" alt="Hero" class="w-full block object-contain h-auto object-center" />
+				</div>
 
-			  <!-- Top Center Title (already in header, so skip here) -->
-
-
-							<!-- Bottom Right Text removed: image contains its own text -->
-
-							<!-- Bottom Center CTA (moved to normal flow so it doesn't overlap the image) -->
-							<div class="w-full bg-[#DFD9D0] py-8">
-								<div class="text-center">
-									<h3 class="text-2xl md:text-3xl lg:text-4xl tracking-[0.2em] font-bold text-[#989086] uppercase">PREVENTA EXCLUSIVA</h3>
-								</div>
-							</div>
-
-			
-		</section>
+				<!-- Franja "PREVENTA EXCLUSIVA" ubicada inmediatamente debajo de la imagen -->
+				<div class="w-full">
+					<div class="bg-[#EDE8E3] py-6">
+						<div class="text-center">
+							<h3 class="text-xl md:text-2xl lg:text-3xl tracking-[0.2em] font-bold text-[#989086] uppercase">PREVENTA EXCLUSIVA</h3>
+						</div>
+					</div>
+				</div>
+			</section>
 
 		<!-- Segunda sección: Pack Trimestral -->
 		<section class="bg-white w-full flex flex-col items-center py-8 md:py-12 px-2">
@@ -61,24 +58,24 @@ import LagreeFitness from '../components/LagreeFitness.astro';
 
 		<!-- Sección descriptiva Lagree y Pilates -->
 		<section class="w-full bg-white">
-			<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-0">
+			<div class="max-w-7xl mx-auto grid grid-cols-2 gap-0 two-col-grid">
 				<!-- Texto Lagree Fitness -->
-				<div class="p-4 md:p-8 flex items-center">
-					<p class="text-[#989086] text-sm md:text-lg font-light"><span class="font-bold">Lagree Fitness</span>, uno de los métodos de entrenamiento más exigentes y comentados del momento, llega por primera vez a Chile. Este entrenamiento de alta intensidad y bajo impacto combina fuerza, resistencia, control y un trabajo profundo de core. Se realiza sobre el Megaformer, mediante movimientos lentos y precisos que mantienen el músculo bajo tensión constante, maximizando los resultados en cada sesión. Favorito de celebridades en Hollywood, abrimos el primer estudio oficial de Lagree en Chile, con clases desafiantes, eficientes y conscientes.</p>
+				<div class="col-span-1 p-4 md:p-8 flex items-center">
+					<p class="text-[#989086] text-sm md:text-lg font-light leading-relaxed"><span class="font-bold">Lagree Fitness</span>, uno de los métodos de entrenamiento más exigentes y comentados del momento, llega por primera vez a Chile. Este entrenamiento de alta intensidad y bajo impacto combina fuerza, resistencia, control y un trabajo profundo de core. Se realiza sobre el Megaformer, mediante movimientos lentos y precisos que mantienen el músculo bajo tensión constante, maximizando los resultados en cada sesión. Favorito de celebridades en Hollywood, abrimos el primer estudio oficial de Lagree en Chile, con clases desafiantes, eficientes y conscientes.</p>
 				</div>
 				<!-- Imagen Lagree Fitness Megaformer -->
-				<div class="w-full h-full flex items-center justify-center">
-					<img src="/fonts/ChatGPT Image Feb 9, 2026 at 11_00_23 AM.png" alt="Lagree Fitness" class="object-cover w-full h-auto max-h-72 md:max-h-96" />
+				<div class="col-span-1 w-full h-full flex items-center justify-center">
+					<img src="/fonts/ChatGPT Image Feb 9, 2026 at 11_00_23 AM.png" alt="Lagree Fitness" class="object-cover w-full h-48 sm:h-72 md:h-96" />
 				</div>
 			</div>
-			<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-0">
+			<div class="max-w-7xl mx-auto grid grid-cols-2 gap-0 two-col-grid">
 				<!-- Imagen Pilates Reformer -->
-				<div class="w-full h-full flex items-center justify-center">
-					<img src="/fonts/ChatGPT Image Feb 10, 2026 at 11_35_18 AM.png" alt="Pilates Reformer" class="object-cover w-full h-auto max-h-72 md:max-h-96" />
+				<div class="col-span-1 w-full h-full flex items-center justify-center">
+					<img src="/fonts/ChatGPT Image Feb 10, 2026 at 11_35_18 AM.png" alt="Pilates Reformer" class="object-cover w-full h-48 sm:h-72 md:h-96" />
 				</div>
 				<!-- Texto Pilates Reformer -->
-				<div class="p-4 md:p-8 flex items-center">
-					<p class="text-[#989086] text-sm md:text-lg font-light"><span class="font-bold">Pilates Reformer</span> es un entrenamiento de bajo impacto que fortalece, tonifica y alarga el cuerpo de forma integral. Mejora la postura, la flexibilidad y la estabilidad del core a través de movimientos controlados y precisos. Ideal para todos los niveles y para quienes buscan fuerza, equilibrio y conexión cuerpo–mente.</p>
+				<div class="col-span-1 p-4 md:p-8 flex items-center">
+					<p class="text-[#989086] text-sm md:text-lg font-light leading-relaxed"><span class="font-bold">Pilates Reformer</span> es un entrenamiento de bajo impacto que fortalece, tonifica y alarga el cuerpo de forma integral. Mejora la postura, la flexibilidad y la estabilidad del core a través de movimientos controlados y precisos. Ideal para todos los niveles y para quienes buscan fuerza, equilibrio y conexión cuerpo–mente.</p>
 				</div>
 			</div>
 		</section>

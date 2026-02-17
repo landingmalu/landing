@@ -22,3 +22,24 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
+/* Custom tweaks to keep the two-column blocks side-by-side on small screens */
+.two-col-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr) !important;
+}
+
+/* For very small screens, slightly reduce text size and paddings so content fits better */
+@media (max-width: 420px) {
+	.two-col-grid p {
+		font-size: 13px;
+	}
+	.two-col-grid .col-span-1 {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+	.two-col-grid img {
+		object-fit: cover;
+		height: 180px;
+	}
+}
