@@ -84,7 +84,8 @@ body {
 
 	/* First column: time cells. Allow wrapping so times can break into two rows
 	   (e.g. "7:00 AM -" / "7:50 AM") and avoid overlap. */
-	table.w-full.max-w-4xl tbody td:first-child {
+	table.w-full.max-w-4xl tbody td:first-child,
+	table.w-full.max-w-4xl thead th:first-child {
 		padding: 0.25rem 0.35rem !important;
 		font-size: clamp(9px, 2.4vw, 11px) !important;
 		line-height: 1.05 !important;
@@ -92,21 +93,23 @@ body {
 		white-space: normal !important;
 		word-break: break-word !important;
 		overflow-wrap: break-word !important;
-		max-width: 4.6rem; /* force wrap at available width */
+		width: 20% !important; /* give first column fixed portion of table */
 	}
 
-	/* Other cells: keep single-line behavior where possible to keep grid compact */
+	/* Other cells: allow wrapping so text stays inside its own cell and doesn't overlap */
 	table.w-full.max-w-4xl thead th,
 	table.w-full.max-w-4xl tbody td:not(:first-child) {
 		padding: 0.25rem 0.25rem !important;
-		font-size: clamp(7px, 2.0vw, 11px) !important;
+		font-size: clamp(8px, 2.1vw, 11px) !important;
 		line-height: 1.05 !important;
 		text-align: center;
-		word-break: normal !important;
-		overflow-wrap: normal !important;
-		hyphens: none !important;
-		white-space: nowrap !important;
+		word-break: break-word !important;
+		overflow-wrap: break-word !important;
+		hyphens: auto !important;
+		white-space: normal !important;
 		text-overflow: clip;
+		/* distribute remaining width across other columns */
+		width: 13% !important;
 	}
 
 	/* Slightly reduce the header height and font so HORARIOS stays visible */
@@ -127,6 +130,45 @@ body {
 		table.w-full.max-w-4xl {
 			width: 100% !important;
 		}
+	}
+}
+
+/* Image-like scaling for the HORARIOS tables on very small screens.
+   Below 420px we scale the entire table down so it behaves like a single image
+   (prevents column headers breaking and keeps visual proportions). */
+@media (max-width: 420px) {
+	.horarios-wrapper {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		overflow: hidden; /* hide any overflow after scaling */
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+	}
+
+	.horarios-scale {
+		transform-origin: top center;
+		/* scale based on viewport width to keep the whole table visible */
+		transform: scale(0.82);
+		/* ensure the table doesn't wrap headers */
+		table-layout: fixed !important;
+		width: 900px; /* reference width so scaling works predictably */
+		max-width: none !important;
+	}
+
+	/* Prevent header words from breaking (like MIÉRCOLES) */
+	.horarios-scale thead th {
+		white-space: nowrap !important;
+	}
+
+	/* Slight adjustment: reduce spacing and keep look compact after scale */
+	.horarios-scale td, .horarios-scale th {
+		padding: 0.35rem 0.35rem !important;
+	}
+
+	/* If screen is even smaller, apply stronger scale */
+	@media (max-width: 360px) {
+		.horarios-scale { transform: scale(0.72); }
 	}
 }
 
