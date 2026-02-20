@@ -70,6 +70,66 @@ body {
 	}
 }
 
+/* Make the HORARIOS tables scale down on small screens by reducing
+   cell padding, font-size and forcing fixed table layout so the
+   table behaves like an image and fits the viewport. */
+@media (max-width: 640px) {
+	/* target the tables used for schedules (they have these utility classes) */
+	table.w-full.max-w-4xl {
+		width: calc(100% - 1rem) !important;
+		max-width: 100% !important;
+		table-layout: fixed;
+		transform-origin: top center;
+	}
+
+	/* First column: time cells. Allow wrapping so times can break into two rows
+	   (e.g. "7:00 AM -" / "7:50 AM") and avoid overlap. */
+	table.w-full.max-w-4xl tbody td:first-child {
+		padding: 0.25rem 0.35rem !important;
+		font-size: clamp(9px, 2.4vw, 11px) !important;
+		line-height: 1.05 !important;
+		text-align: center;
+		white-space: normal !important;
+		word-break: break-word !important;
+		overflow-wrap: break-word !important;
+		max-width: 4.6rem; /* force wrap at available width */
+	}
+
+	/* Other cells: keep single-line behavior where possible to keep grid compact */
+	table.w-full.max-w-4xl thead th,
+	table.w-full.max-w-4xl tbody td:not(:first-child) {
+		padding: 0.25rem 0.25rem !important;
+		font-size: clamp(7px, 2.0vw, 11px) !important;
+		line-height: 1.05 !important;
+		text-align: center;
+		word-break: normal !important;
+		overflow-wrap: normal !important;
+		hyphens: none !important;
+		white-space: nowrap !important;
+		text-overflow: clip;
+	}
+
+	/* Slightly reduce the header height and font so HORARIOS stays visible */
+	section.bg-[#A1998D] span {
+		font-size: clamp(16px, 4.8vw, 20px) !important;
+		padding-top: 0.6rem;
+		padding-bottom: 0.6rem;
+	}
+
+	/* Reduce spacing between table cells so the whole grid visually shrinks */
+	table.w-full.max-w-4xl {
+		border-spacing: 4px 4px !important;
+	}
+
+	/* As a safety fallback for very narrow screens, allow horizontal scroll
+	   (but primary behavior is to fit by reducing sizes above). */
+	@media (max-width: 360px) {
+		table.w-full.max-w-4xl {
+			width: 100% !important;
+		}
+	}
+}
+
 /* Extra small devices fallback tweaks */
 @media (max-width: 420px) {
 	.two-col-grid > .col-span-1 {
