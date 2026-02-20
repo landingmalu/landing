@@ -30,16 +30,68 @@ body {
 }
 
 /* For very small screens, slightly reduce text size and paddings so content fits better */
-@media (max-width: 420px) {
-	.two-col-grid p {
-		font-size: 13px;
+@media (max-width: 640px) {
+	/* Keep the two-column layout but force both column cells to the same height
+	   so the paragraph block matches the image height on mobile */
+	.two-col-grid {
+		grid-template-columns: repeat(2, 1fr) !important;
 	}
-	.two-col-grid .col-span-1 {
-		padding-left: 8px;
-		padding-right: 8px;
+
+	.two-col-grid > .col-span-1 {
+		height: 12rem; /* matches Tailwind's h-48 used in the markup */
+		display: flex;
+		align-items: flex-start; /* ensure text starts below any overlapping header */
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+		padding-top: 0.6rem; /* extra top padding to avoid being cut by header */
 	}
+
 	.two-col-grid img {
 		object-fit: cover;
-		height: 180px;
+		height: 12rem; /* keep image height consistent on mobile */
+	}
+
+	/* Responsive font that scales down as the viewport gets smaller.
+	   The clamp ensures it won't get too small or too large. */
+	.two-col-grid p {
+		margin: 0;
+		line-height: 1.18;
+		/* Reduce font more aggressively so the full paragraph fits inside image height
+		   instead of being truncated. The viewport unit helps scale with screen width. */
+		font-size: clamp(8px, 2.2vw, 12px);
+		/* ensure text is visible and doesn't get hidden behind the header */
+		max-height: none;
+		overflow: visible;
+		display: block;
+		word-break: break-word;
+		hyphens: auto;
+		padding-top: 0;
+		padding-bottom: 0.2rem;
+	}
+}
+
+/* Extra small devices fallback tweaks */
+@media (max-width: 420px) {
+	.two-col-grid > .col-span-1 {
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+	}
+	.two-col-grid p {
+		font-size: clamp(11px, 4.2vw, 14px);
+	}
+}
+
+/* Additional mobile-only spacing fixes requested: add extra top padding
+   to the second two-col-grid paragraph block and extra bottom space
+   below the descriptive section so the second image doesn't overlap HORARIOS. */
+@media (max-width: 640px) {
+	/* target the second descriptive grid (image-left, text-right) */
+	.two-col-grid:nth-of-type(2) > .col-span-1 {
+		padding-top: 0.9rem; /* small gap above the paragraph */
+	}
+
+	/* add space below the whole descriptive section to separate from HORARIOS */
+	section.w-full.bg-white {
+		padding-bottom: 2.5rem;
 	}
 }
