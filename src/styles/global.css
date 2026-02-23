@@ -70,105 +70,69 @@ body {
 	}
 }
 
-/* Make the HORARIOS tables scale down on small screens by reducing
-   cell padding, font-size and forcing fixed table layout so the
-   table behaves like an image and fits the viewport. */
-@media (max-width: 640px) {
-	/* target the tables used for schedules (they have these utility classes) */
-	table.w-full.max-w-4xl {
-		width: calc(100% - 1rem) !important;
-		max-width: 100% !important;
-		table-layout: fixed;
-		transform-origin: top center;
-	}
+/* Horarios tables that scale like an image - entire table scales proportionally */
+.horarios-wrapper {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	overflow: hidden;
+	margin-bottom: 3rem;
+}
 
-	/* First column: time cells. Allow wrapping so times can break into two rows
-	   (e.g. "7:00 AM -" / "7:50 AM") and avoid overlap. */
-	table.w-full.max-w-4xl tbody td:first-child,
-	table.w-full.max-w-4xl thead th:first-child {
-		padding: 0.25rem 0.35rem !important;
-		font-size: clamp(9px, 2.4vw, 11px) !important;
-		line-height: 1.05 !important;
-		text-align: center;
-		white-space: normal !important;
-		word-break: break-word !important;
-		overflow-wrap: break-word !important;
-		width: 20% !important; /* give first column fixed portion of table */
-	}
+.horarios-scale {
+	width: 900px;
+	min-width: 900px;
+	table-layout: fixed;
+	transform-origin: top center;
+}
 
-	/* Other cells: allow wrapping so text stays inside its own cell and doesn't overlap */
-	table.w-full.max-w-4xl thead th,
-	table.w-full.max-w-4xl tbody td:not(:first-child) {
-		padding: 0.25rem 0.25rem !important;
-		font-size: clamp(8px, 2.1vw, 11px) !important;
-		line-height: 1.05 !important;
-		text-align: center;
-		word-break: break-word !important;
-		overflow-wrap: break-word !important;
-		hyphens: auto !important;
-		white-space: normal !important;
-		text-overflow: clip;
-		/* distribute remaining width across other columns */
-		width: 13% !important;
-	}
+.horarios-scale th,
+.horarios-scale td {
+	white-space: nowrap;
+}
 
-	/* Slightly reduce the header height and font so HORARIOS stays visible */
-	section.bg-[#A1998D] span {
-		font-size: clamp(16px, 4.8vw, 20px) !important;
-		padding-top: 0.6rem;
-		padding-bottom: 0.6rem;
-	}
-
-	/* Reduce spacing between table cells so the whole grid visually shrinks */
-	table.w-full.max-w-4xl {
-		border-spacing: 4px 4px !important;
-	}
-
-	/* As a safety fallback for very narrow screens, allow horizontal scroll
-	   (but primary behavior is to fit by reducing sizes above). */
-	@media (max-width: 360px) {
-		table.w-full.max-w-4xl {
-			width: 100% !important;
-		}
+/* Desktop - no scaling needed */
+@media (min-width: 921px) {
+	.horarios-wrapper {
+		padding: 0 1rem;
 	}
 }
 
-/* Image-like scaling for the HORARIOS tables on very small screens.
-   Below 420px we scale the entire table down so it behaves like a single image
-   (prevents column headers breaking and keeps visual proportions). */
-@media (max-width: 420px) {
+/* Scale down proportionally on smaller screens */
+@media (max-width: 920px) {
 	.horarios-wrapper {
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		overflow: hidden; /* hide any overflow after scaling */
-		padding-left: 0.5rem;
-		padding-right: 0.5rem;
+		padding: 0;
+		margin-bottom: 2rem;
 	}
-
+	
 	.horarios-scale {
-		transform-origin: top center;
-		/* scale based on viewport width to keep the whole table visible */
-		transform: scale(0.82);
-		/* ensure the table doesn't wrap headers */
-		table-layout: fixed !important;
-		width: 900px; /* reference width so scaling works predictably */
-		max-width: none !important;
+		transform: scale(calc(100vw / 920));
 	}
+}
 
-	/* Prevent header words from breaking (like MIÉRCOLES) */
-	.horarios-scale thead th {
-		white-space: nowrap !important;
+@media (max-width: 768px) {
+	.horarios-scale {
+		transform: scale(calc(100vw / 920));
 	}
+}
 
-	/* Slight adjustment: reduce spacing and keep look compact after scale */
-	.horarios-scale td, .horarios-scale th {
-		padding: 0.35rem 0.35rem !important;
+@media (max-width: 480px) {
+	.horarios-wrapper {
+		margin-bottom: 1.5rem;
 	}
+	
+	.horarios-scale {
+		transform: scale(calc(100vw / 920));
+	}
+}
 
-	/* If screen is even smaller, apply stronger scale */
-	@media (max-width: 360px) {
-		.horarios-scale { transform: scale(0.72); }
+@media (max-width: 360px) {
+	.horarios-wrapper {
+		margin-bottom: 1rem;
+	}
+	
+	.horarios-scale {
+		transform: scale(calc(100vw / 920));
 	}
 }
 

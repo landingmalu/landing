@@ -5,6 +5,57 @@ import LagreeFitness from '../components/LagreeFitness.astro';
 
 <Layout>
 	<main class="min-h-screen w-full">
+		<script>
+			async function handleCompra() {
+				const button = document.getElementById('btn-comprar');
+				if (!button) return;
+
+				// Deshabilitar botón y mostrar loading
+				button.textContent = 'Procesando...';
+				button.setAttribute('disabled', 'true');
+
+				try {
+					// Crear transacción con Transbank
+					const response = await fetch('/api/transbank/create', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({
+							amount: 369990, // Precio del pack trimestral
+						orderId: `PKT${Date.now().toString().slice(-10)}` // Máx 26 caracteres
+						// Crear formulario para redireccionar a Webpay
+						const form = document.createElement('form');
+						form.method = 'POST';
+						form.action = data.url;
+
+						const input = document.createElement('input');
+						input.type = 'hidden';
+						input.name = 'token_ws';
+						input.value = data.token;
+
+						form.appendChild(input);
+						document.body.appendChild(form);
+						form.submit();
+					} else {
+						throw new Error(data.error || 'Error al procesar el pago');
+					}
+				} catch (error) {
+					console.error('Error:', error);
+					alert('Ocurrió un error al procesar el pago. Por favor, intenta nuevamente.');
+					button.textContent = 'COMPRAR';
+					button.removeAttribute('disabled');
+				}
+			}
+
+			// Agregar evento al botón cuando el DOM esté listo
+			document.addEventListener('DOMContentLoaded', () => {
+				const button = document.getElementById('btn-comprar');
+				if (button) {
+					button.addEventListener('click', handleCompra);
+				}
+			});
+		</script>
 			<!-- Header Section (reduced height) -->
 			<div class="bg-[#989086] py-2 md:py-3">
 		      <div class="text-center">
@@ -44,7 +95,7 @@ import LagreeFitness from '../components/LagreeFitness.astro';
 
 					</div>
 					<div class="mt-6">
-						<button class="bg-[#989086] text-white font-bold text-base md:text-lg px-6 md:px-10 py-2 rounded-full hover:bg-[#B4A79D] transition">COMPRAR</button>
+						<button id="btn-comprar" class="bg-[#989086] text-white font-bold text-base md:text-lg px-6 md:px-10 py-2 rounded-full hover:bg-[#B4A79D] transition disabled:opacity-50 disabled:cursor-not-allowed">COMPRAR</button>
 					</div>
 				</div>
 		</section>

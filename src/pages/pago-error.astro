@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Obtener parámetros de error
+const urlParams = new URL(Astro.request.url).searchParams;
+const errorCode = urlParams.get('code') || urlParams.get('error') || 'unknown';
+const buyOrder = urlParams.get('buyOrder') || '';
+
+// Mensajes de error según código
+const errorMessages: Record<string, string> = {
+  'token_missing': 'No se recibió el token de la transacción.',
+  'cancelled': 'La transacción fue cancelada por el usuario.',
+  'server_error': 'Ocurrió un error en el servidor. Por favor, intenta nuevamente.',
+  'unknown': 'Ocurrió un error desconocido.',
+  '-1': 'Rechazo de transacción.',
+  '-2': 'Transacción debe reintentarse.',
+  '-3': 'Error en transacción.',
+  '-4': 'Rechazo de transacción.',
+  '-5': 'Rechazo por error de tasa.',
+  '-6': 'Excede cupo máximo mensual.',
+  '-7': 'Excede límite diario por transacción.',
+  '-8': 'Rubro no autorizado.'
+};
+
+const errorMessage = errorMessages[errorCode] || 'La transacción no pudo ser procesada.';
+---
+
+<Layout>
+  <main class="min-h-screen w-full bg-white">
+    <!-- Header Section -->
+    <div class="bg-[#989086] py-2 md:py-3">
+      <div class="text-center">
+        <h1 class="text-3xl md:text-4xl tracking-[0.4em] font-light text-white mb-0">PILATES</h1>
+        <p class="text-xs md:text-sm tracking-[0.4em] font-light text-white mt-0">MALÚ PÉREZ</p>
+      </div>
+    </div>
+
+    <!-- Contenido de error -->
+    <section class="w-full flex flex-col items-center justify-center py-16 px-4">
+      <div class="max-w-2xl w-full bg-[#EDE8E3] rounded-3xl shadow-lg p-8 md:p-12 text-center">
+        <!-- Icono de error -->
+        <div class="mb-6">
+          <svg class="w-20 h-20 mx-auto text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+
+        <h2 class="text-3xl md:text-4xl font-bold text-[#989086] mb-4">Pago No Procesado</h2>
+        <p class="text-lg text-[#989086] mb-8">Lo sentimos, tu pago no pudo ser completado.</p>
+
+        <!-- Mensaje de error -->
+        <div class="bg-white rounded-xl p-6 mb-8">
+          <p class="text-[#989086] font-semibold mb-2">Detalle del error:</p>
+          <p class="text-[#989086]">{errorMessage}</p>
+          {buyOrder && (
+            <p class="text-[#989086] text-sm mt-4">
+              Orden: <span class="font-mono">{buyOrder}</span>
+            </p>
+          )}
+        </div>
+
+        <!-- Información adicional -->
+        <div class="bg-[#D4CCC3] rounded-xl p-6 mb-8">
+          <p class="text-[#989086] text-sm">
+            Si el problema persiste, por favor contáctanos para asistirte con tu compra.
+          </p>
+        </div>
+
+        <!-- Botones -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/" class="inline-block bg-[#989086] text-white font-bold text-lg px-10 py-3 rounded-full hover:bg-[#B4A79D] transition">
+            Intentar Nuevamente
+          </a>
+          <a href="mailto:contacto@maluperez.cl" class="inline-block bg-white border-2 border-[#989086] text-[#989086] font-bold text-lg px-10 py-3 rounded-full hover:bg-[#EDE8E3] transition">
+            Contactar Soporte
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
