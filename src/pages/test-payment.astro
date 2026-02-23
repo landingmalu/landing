@@ -20,8 +20,8 @@ import Layout from '../layouts/Layout.astro';
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              amount: 50, // Monto de prueba requerido por Transbank
-              orderId: `TST${Date.now().toString().slice(-10)}` // Máx 26 caracteres
+              amount: 50,
+              orderId: `TST${Date.now().toString().slice(-10)}`
             })
           });
 
