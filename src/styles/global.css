@@ -161,3 +161,25 @@ body {
 		padding-bottom: 2.5rem;
 	}
 }
+
+/* Fixed size schedule tables - keeps appearance consistent across all screen sizes */
+.horarios-wrapper {
+	transform: scale(1);
+	transform-origin: top center;
+	width: 100%;
+}
+
+/* Fixed table size without responsive scaling */
+.horarios-scale {
+	font-size: 12px !important;
+	width: 100%;
+}
+
+.horarios-scale th,
+.horarios-scale td {
+	padding: 8px 6px !important;
+	white-space: nowrap;
+	font-size: 12px !important;
+	line-height: 1.2;
+	height: 32px;
+}
