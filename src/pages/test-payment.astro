@@ -21,7 +21,11 @@ import Layout from '../layouts/Layout.astro';
             },
             body: JSON.stringify({
               amount: 50, // Monto de prueba requerido por Transbank
-            orderId: `TST${Date.now().toString().slice(-10)}` // Máx 26 caracteres
+              orderId: `TST${Date.now().toString().slice(-10)}` // Máx 26 caracteres
+            })
+          });
+
+          const data = await response.json();
 
           if (data.success && data.url && data.token) {
             // Crear formulario para redireccionar a Webpay
