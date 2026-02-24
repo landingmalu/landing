@@ -54,6 +54,7 @@ const PACK_TRIMESTRAL = 369990;
                     class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
                     placeholder="Nombre"
                   />
+                  <div id="error-nombre" class="text-red-500 text-sm mt-1 hidden">Por favor, completa el campo Nombre</div>
                 </div>
                 <div>
                   <label for="apellidos" class="block text-[#989086] font-semibold mb-2">Apellidos *</label>
@@ -64,6 +65,7 @@ const PACK_TRIMESTRAL = 369990;
                     class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
                     placeholder="Apellidos"
                   />
+                  <div id="error-apellidos" class="text-red-500 text-sm mt-1 hidden">Por favor, completa el campo Apellidos</div>
                 </div>
               </div>
 
@@ -78,6 +80,7 @@ const PACK_TRIMESTRAL = 369990;
                     class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
                     placeholder="tu@email.com"
                   />
+                  <div id="error-email" class="text-red-500 text-sm mt-1 hidden">Por favor, completa el campo Email</div>
                 </div>
                 <div>
                   <label for="telefono" class="block text-[#989086] font-semibold mb-2">Teléfono *</label>
@@ -88,6 +91,7 @@ const PACK_TRIMESTRAL = 369990;
                     class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
                     placeholder="+56 9 1234 5678"
                   />
+                  <div id="error-telefono" class="text-red-500 text-sm mt-1 hidden">Por favor, completa el campo Teléfono</div>
                 </div>
               </div>
 
@@ -101,10 +105,10 @@ const PACK_TRIMESTRAL = 369990;
                   type="text"
                   id="pais"
                   name="pais"
-                  value="Chile"
                   class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
                   placeholder="País"
                 />
+                <div id="error-pais" class="text-red-500 text-sm mt-1 hidden">Por favor, completa el campo País</div>
               </div>
 
               <div>
@@ -116,6 +120,7 @@ const PACK_TRIMESTRAL = 369990;
                   class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
                   placeholder="Nombre de la calle y número de la casa"
                 />
+                <div id="error-direccion" class="text-red-500 text-sm mt-1 hidden">Por favor, completa el campo Dirección</div>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -128,6 +133,7 @@ const PACK_TRIMESTRAL = 369990;
                     class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
                     placeholder="Tu ciudad"
                   />
+                  <div id="error-ciudad" class="text-red-500 text-sm mt-1 hidden">Por favor, completa el campo Ciudad</div>
                 </div>
                 <div>
                   <label for="region" class="block text-[#989086] font-semibold mb-2">Región *</label>
@@ -135,10 +141,10 @@ const PACK_TRIMESTRAL = 369990;
                     type="text"
                     id="region"
                     name="region"
-                    value="Región Metropolitana de Santiago"
                     class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
                     placeholder="Región"
                   />
+                  <div id="error-region" class="text-red-500 text-sm mt-1 hidden">Por favor, completa el campo Región</div>
                 </div>
               </div>
 
@@ -217,7 +223,90 @@ const PACK_TRIMESTRAL = 369990;
       </div>
     </div>
 
+    <!-- Botón Volver al Inicio -->
+    <div class="w-full bg-white py-8 px-4">
+      <div class="max-w-4xl mx-auto flex justify-center">
+        <a href="/" class="text-[#8B7E74] hover:text-[#989086] transition flex items-center gap-2 text-lg font-semibold border-2 border-[#8B7E74] hover:border-[#989086] px-6 py-3 rounded-lg">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Volver al inicio
+        </a>
+      </div>
+    </div>
+
     <script>
+      // Función para validar un campo
+      function validateField(fieldId: string, errorId: string, customValidator?: (value: string) => boolean): boolean {
+        const field = document.getElementById(fieldId) as HTMLInputElement;
+        const error = document.getElementById(errorId) as HTMLElement;
+        
+        if (!field || !error) return true;
+        
+        const value = field.value.trim();
+        let isValid = value !== '';
+        
+        if (customValidator) {
+          isValid = isValid && customValidator(value);
+        }
+        
+        if (!isValid) {
+          error.classList.remove('hidden');
+          field.classList.add('border-red-500');
+        } else {
+          error.classList.add('hidden');
+          field.classList.remove('border-red-500');
+        }
+        
+        return isValid;
+      }
+
+      // Validación de email
+      function validateEmail(email: string): boolean {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+
+      // Agregar listeners para validación en tiempo real
+      document.addEventListener('DOMContentLoaded', () => {
+        const fields = ['nombre', 'apellidos', 'email', 'telefono', 'pais', 'direccion', 'ciudad', 'region'];
+        
+        fields.forEach(fieldId => {
+          const field = document.getElementById(fieldId) as HTMLInputElement;
+          if (field) {
+            field.addEventListener('blur', () => {
+              if (fieldId === 'email') {
+                const error = document.getElementById('error-email') as HTMLElement;
+                if (error && field.value.trim() && !validateEmail(field.value.trim())) {
+                  error.textContent = 'Por favor, ingresa un email válido';
+                  error.classList.remove('hidden');
+                  field.classList.add('border-red-500');
+                } else if (error && field.value.trim() && validateEmail(field.value.trim())) {
+                  error.classList.add('hidden');
+                  field.classList.remove('border-red-500');
+                }
+              } else {
+                validateField(fieldId, `error-${fieldId}`);
+              }
+            });
+            
+            field.addEventListener('input', () => {
+              if (field.value.trim()) {
+                const error = document.getElementById(`error-${fieldId}`) as HTMLElement;
+                if (error) {
+                  if (fieldId === 'email' && error.textContent === 'Por favor, ingresa un email válido') {
+                    // Mantener el mensaje de formato inválido hasta que el usuario deje el campo
+                  } else {
+                    error.classList.add('hidden');
+                    field.classList.remove('border-red-500');
+                  }
+                }
+              }
+            });
+          }
+        });
+      });
+
       async function handleCheckout(e: Event) {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
@@ -227,55 +316,35 @@ const PACK_TRIMESTRAL = 369990;
 
         if (!button) return;
 
-        // Validar campos requeridos
-        const nombre = (document.getElementById('nombre') as HTMLInputElement).value.trim();
-        const apellidos = (document.getElementById('apellidos') as HTMLInputElement).value.trim();
-        const email = (document.getElementById('email') as HTMLInputElement).value.trim();
-        const telefono = (document.getElementById('telefono') as HTMLInputElement).value.trim();
-        const direccion = (document.getElementById('direccion') as HTMLInputElement).value.trim();
-        const ciudad = (document.getElementById('ciudad') as HTMLInputElement).value.trim();
-
-        // Validar nombre
-        if (!nombre) {
-          alert('Por favor, completa el campo Nombre');
-          return;
-        }
-
-        // Validar apellidos
-        if (!apellidos) {
-          alert('Por favor, completa el campo Apellidos');
-          return;
-        }
-
-        // Validar email
-        if (!email) {
-          alert('Por favor, completa el campo Email');
-          return;
-        }
-
-        // Validar formato de email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-          alert('Por favor, ingresa un email válido');
-          return;
-        }
-
-        // Validar teléfono
-        if (!telefono) {
-          alert('Por favor, completa el campo Teléfono');
-          return;
-        }
-
-        // Validar dirección
-        if (!direccion) {
-          alert('Por favor, completa el campo Dirección');
-          return;
-        }
-
-        // Validar ciudad
-        if (!ciudad) {
-          alert('Por favor, completa el campo Ciudad');
-          return;
+        // Validar todos los campos
+        let isValid = true;
+        
+        isValid = validateField('nombre', 'error-nombre') && isValid;
+        isValid = validateField('apellidos', 'error-apellidos') && isValid;
+        isValid = validateField('telefono', 'error-telefono') && isValid;
+        isValid = validateField('pais', 'error-pais') && isValid;
+        isValid = validateField('direccion', 'error-direccion') && isValid;
+        isValid = validateField('ciudad', 'error-ciudad') && isValid;
+        isValid = validateField('region', 'error-region') && isValid;
+        
+        // Validar email con formato
+        const emailField = document.getElementById('email') as HTMLInputElement;
+        const emailError = document.getElementById('error-email') as HTMLElement;
+        const emailValue = emailField.value.trim();
+        
+        if (!emailValue) {
+          emailError.textContent = 'Por favor, completa el campo Email';
+          emailError.classList.remove('hidden');
+          emailField.classList.add('border-red-500');
+          isValid = false;
+        } else if (!validateEmail(emailValue)) {
+          emailError.textContent = 'Por favor, ingresa un email válido';
+          emailError.classList.remove('hidden');
+          emailField.classList.add('border-red-500');
+          isValid = false;
+        } else {
+          emailError.classList.add('hidden');
+          emailField.classList.remove('border-red-500');
         }
 
         // Validar que aceptó los términos
@@ -283,12 +352,15 @@ const PACK_TRIMESTRAL = 369990;
           if (errorTerminos) {
             errorTerminos.classList.remove('hidden');
           }
-          return;
+          isValid = false;
+        } else {
+          if (errorTerminos) {
+            errorTerminos.classList.add('hidden');
+          }
         }
 
-        // Ocultar error si está marcado
-        if (errorTerminos) {
-          errorTerminos.classList.add('hidden');
+        if (!isValid) {
+          return;
         }
 
         button.textContent = 'Procesando...';
@@ -429,6 +501,58 @@ Puedes revocar en cualquier momento la autorización que entregas para tratar tu
         </div>
       </div>
     </dialog>
+
+    <!-- Footer Section -->
+    <footer class="bg-[#A1998D] w-full py-10">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex flex-row items-center justify-between flex-nowrap gap-8" style="min-height:120px">
+          <!-- Logo -->
+          <div class="flex-shrink-0 flex items-center justify-center" style="min-width:120px">
+            <img src="/fonts/Logo-Malu-Perez-Final-Footer.png" alt="Malú Pérez" class="h-24 w-24 object-contain rounded-full bg-[#A1998D] p-2 border-0" />
+          </div>
+          <!-- Instagram -->
+          <div class="flex flex-col items-center flex-grow text-center">
+            <svg class="w-12 h-12 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect width="20" height="20" x="2" y="2" rx="5" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+              <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/>
+            </svg>
+            <span class="text-white font-light">Síguenos en</span>
+            <span class="text-white font-semibold">@pilatesmaluperez</span>
+          </div>
+
+          <!-- Location -->
+          <div class="flex flex-col items-end flex-shrink-0 text-right" style="min-width:220px">
+            <svg class="w-12 h-12 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span class="text-white font-light">Mall Casa Costanera,</span>
+            <span class="text-white font-light">Av. Nueva Costanera 3900,</span>
+            <span class="text-white font-light">Vitacura, 3er Piso</span>
+          </div>
+        </div>
+      </div>
+      <style>
+        @media (max-width: 900px) {
+          footer .flex-row { gap: 2rem; }
+          footer .flex-col { font-size: 0.95rem; }
+        }
+        @media (max-width: 700px) {
+          footer .flex-row { gap: 1rem; }
+          footer .flex-col { font-size: 0.9rem; }
+          footer .w-12, footer .h-12 { width: 2.5rem; height: 2.5rem; }
+          footer .h-24, footer .w-24 { height: 4rem; width: 4rem; }
+        }
+        @media (max-width: 600px) {
+          footer .flex-row { gap: 0.5rem; }
+          footer .flex-col { font-size: 0.85rem; }
+          footer .h-24, footer .w-24 { height: 3rem; width: 3rem; }
+          footer .w-12, footer .h-12 { width: 2rem; height: 2rem; }
+          footer .flex-col span { font-size: 0.8rem; }
+        }
+      </style>
+    </footer>
   </main>
 </Layout>
 
