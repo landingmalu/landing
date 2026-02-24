@@ -1,0 +1,444 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const PACK_MENSUAL = 139990;
+const PACK_TRIMESTRAL = 369990;
+---
+
+<Layout>
+  <main class="min-h-screen w-full bg-white">
+    <!-- Header -->
+    <div class="bg-[#989086] h-20 md:h-28 flex items-center justify-center overflow-hidden">
+      <img src="/fonts/Logo-Malu-Perez-Final.png" alt="Malú Pérez Pilates" class="h-32 md:h-56 w-auto object-contain" />
+    </div>
+
+    <!-- Título -->
+    <div class="w-full bg-transparent py-12">
+      <h1 class="text-center text-[#8B7E74] text-4xl md:text-5xl font-bold italic">FINALIZAR COMPRA</h1>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="bg-white py-8 px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex items-center justify-between mb-8">
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-10 h-10 bg-[#989086] text-white rounded-full flex items-center justify-center font-bold mb-2">1</div>
+            <span class="text-[#989086] font-semibold text-sm">Detalles</span>
+          </div>
+          <div class="flex-1 h-1 bg-[#989086] mx-4 mb-6"></div>
+          <div class="flex flex-col items-center flex-1">
+            <div class="w-10 h-10 bg-[#989086] text-white rounded-full flex items-center justify-center font-bold mb-2">2</div>
+            <span class="text-[#989086] font-semibold text-sm">Pago</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="bg-white py-12 px-4">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col lg:flex-row gap-8">
+          <!-- Formulario -->
+          <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold text-[#989086] mb-8">Detalles De Facturación</h2>
+
+            <form id="checkout-form" class="space-y-6">
+              <!-- Nombre y Apellidos -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="nombre" class="block text-[#989086] font-semibold mb-2">Nombre *</label>
+                  <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
+                    placeholder="Nombre"
+                  />
+                </div>
+                <div>
+                  <label for="apellidos" class="block text-[#989086] font-semibold mb-2">Apellidos *</label>
+                  <input
+                    type="text"
+                    id="apellidos"
+                    name="apellidos"
+                    class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
+                    placeholder="Apellidos"
+                  />
+                </div>
+              </div>
+
+              <!-- Email y Teléfono -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="email" class="block text-[#989086] font-semibold mb-2">Dirección de correo electrónico *</label>
+                  <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
+                    placeholder="tu@email.com"
+                  />
+                </div>
+                <div>
+                  <label for="telefono" class="block text-[#989086] font-semibold mb-2">Teléfono *</label>
+                  <input
+                    type="text"
+                    id="telefono"
+                    name="telefono"
+                    class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
+                    placeholder="+56 9 1234 5678"
+                  />
+                </div>
+              </div>
+
+              <!-- Divider -->
+              <hr class="border-[#D4CCC3]" />
+
+              <!-- Dirección -->
+              <div>
+                <label for="pais" class="block text-[#989086] font-semibold mb-2">País / Región *</label>
+                <input
+                  type="text"
+                  id="pais"
+                  name="pais"
+                  value="Chile"
+                  class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
+                  placeholder="País"
+                />
+              </div>
+
+              <div>
+                <label for="direccion" class="block text-[#989086] font-semibold mb-2">Dirección de la calle *</label>
+                <input
+                  type="text"
+                  id="direccion"
+                  name="direccion"
+                  class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
+                  placeholder="Nombre de la calle y número de la casa"
+                />
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="ciudad" class="block text-[#989086] font-semibold mb-2">Población / Ciudad *</label>
+                  <input
+                    type="text"
+                    id="ciudad"
+                    name="ciudad"
+                    class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
+                    placeholder="Tu ciudad"
+                  />
+                </div>
+                <div>
+                  <label for="region" class="block text-[#989086] font-semibold mb-2">Región *</label>
+                  <input
+                    type="text"
+                    id="region"
+                    name="region"
+                    value="Región Metropolitana de Santiago"
+                    class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
+                    placeholder="Región"
+                  />
+                </div>
+              </div>
+
+              {/* Notas */}
+              <div>
+                <label for="notas" class="block text-[#989086] font-semibold mb-2">Notas del pedido (opcional)</label>
+                <textarea
+                  id="notas"
+                  name="notas"
+                  class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
+                  placeholder="Notas especiales para tu compra"
+                  rows="4"
+                ></textarea>
+              </div>
+
+              <!-- Términos y Condiciones -->
+              <div class="pt-4">
+                <div id="error-terminos" class="text-red-500 text-sm mb-2 hidden">Debes aceptar los términos y condiciones para continuar</div>
+                <div class="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    id="terminos"
+                    name="terminos"
+                    class="w-5 h-5 text-[#989086] rounded cursor-pointer mt-1"
+                  />
+                  <label for="terminos" class="text-[#989086] text-sm">
+                    Acepto los <button type="button" id="btn-terminos" class="text-[#989086] font-semibold underline hover:opacity-70">términos y condiciones</button>
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Resumen de Pedido -->
+          <div class="w-full lg:w-96 flex-shrink-0">
+            <div class="bg-[#8B7E74] text-white rounded-lg p-6 sticky top-6">
+              <div class="mb-6">
+                <div class="flex items-start gap-4 mb-4">
+                  <img src="/fonts/Logo-Malu-Perez-Final-Footer.png" alt="Logo" class="w-20 h-20 object-contain flex-shrink-0" />
+                  <div>
+                    <h3 class="font-semibold text-lg">PACK TRIMESTRAL</h3>
+                    <p class="text-sm opacity-90">x 1</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span class="text-2xl font-bold">${PACK_TRIMESTRAL.toLocaleString('es-CL')}</span>
+                </div>
+              </div>
+
+              <div class="space-y-3 border-t border-[#A1998D] pt-4 mb-6">
+                <div class="flex justify-between text-sm">
+                  <span>Subtotal</span>
+                  <span>${PACK_TRIMESTRAL.toLocaleString('es-CL')}</span>
+                </div>
+                <div class="flex justify-between text-lg font-semibold">
+                  <span>Total</span>
+                  <span>${PACK_TRIMESTRAL.toLocaleString('es-CL')}</span>
+                </div>
+              </div>
+
+              <button
+                id="btn-pagar"
+                form="checkout-form"
+                type="submit"
+                class="w-full bg-[#DFD9D0] text-[#8B7E74] font-bold py-3 rounded-lg hover:bg-[#E8E4DF] transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                PROCEDER AL PAGO
+              </button>
+
+              <p class="text-xs text-center mt-4 opacity-75">
+                Se te redirigirá a Transbank para completar el pago de forma segura
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      async function handleCheckout(e: Event) {
+        e.preventDefault();
+        const form = e.target as HTMLFormElement;
+        const button = document.getElementById('btn-pagar') as HTMLButtonElement;
+        const terminos = document.getElementById('terminos') as HTMLInputElement;
+        const errorTerminos = document.getElementById('error-terminos') as HTMLElement;
+
+        if (!button) return;
+
+        // Validar campos requeridos
+        const nombre = (document.getElementById('nombre') as HTMLInputElement).value.trim();
+        const apellidos = (document.getElementById('apellidos') as HTMLInputElement).value.trim();
+        const email = (document.getElementById('email') as HTMLInputElement).value.trim();
+        const telefono = (document.getElementById('telefono') as HTMLInputElement).value.trim();
+        const direccion = (document.getElementById('direccion') as HTMLInputElement).value.trim();
+        const ciudad = (document.getElementById('ciudad') as HTMLInputElement).value.trim();
+
+        // Validar nombre
+        if (!nombre) {
+          alert('Por favor, completa el campo Nombre');
+          return;
+        }
+
+        // Validar apellidos
+        if (!apellidos) {
+          alert('Por favor, completa el campo Apellidos');
+          return;
+        }
+
+        // Validar email
+        if (!email) {
+          alert('Por favor, completa el campo Email');
+          return;
+        }
+
+        // Validar formato de email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          alert('Por favor, ingresa un email válido');
+          return;
+        }
+
+        // Validar teléfono
+        if (!telefono) {
+          alert('Por favor, completa el campo Teléfono');
+          return;
+        }
+
+        // Validar dirección
+        if (!direccion) {
+          alert('Por favor, completa el campo Dirección');
+          return;
+        }
+
+        // Validar ciudad
+        if (!ciudad) {
+          alert('Por favor, completa el campo Ciudad');
+          return;
+        }
+
+        // Validar que aceptó los términos
+        if (!terminos || !terminos.checked) {
+          if (errorTerminos) {
+            errorTerminos.classList.remove('hidden');
+          }
+          return;
+        }
+
+        // Ocultar error si está marcado
+        if (errorTerminos) {
+          errorTerminos.classList.add('hidden');
+        }
+
+        button.textContent = 'Procesando...';
+        button.setAttribute('disabled', 'true');
+
+        try {
+          // Obtener datos del formulario
+          const formData = new FormData(form);
+          const clienteData = {
+            nombre: formData.get('nombre'),
+            apellidos: formData.get('apellidos'),
+            email: formData.get('email'),
+            telefono: formData.get('telefono'),
+            pais: formData.get('pais'),
+            region: formData.get('region'),
+            ciudad: formData.get('ciudad'),
+            direccion: formData.get('direccion'),
+            notas: formData.get('notas'),
+            monto: 369990
+          };
+
+          // 1. Guardar cliente en BD
+          const clienteResponse = await fetch('/api/cliente/crear', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(clienteData)
+          });
+
+          const clienteResult = await clienteResponse.json();
+
+          if (!clienteResult.success) {
+            throw new Error(clienteResult.error || 'Error al guardar datos');
+          }
+
+          const clienteId = clienteResult.clienteId;
+
+          // 2. Crear transacción en Transbank
+          const paymentResponse = await fetch('/api/transbank/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              amount: 369990,
+              orderId: clienteId,
+              clienteId: clienteId
+            })
+          });
+
+          const paymentData = await paymentResponse.json();
+
+          if (paymentData.success && paymentData.url && paymentData.token) {
+            // 3. Redirigir a Webpay
+            const webpayForm = document.createElement('form');
+            webpayForm.method = 'POST';
+            webpayForm.action = paymentData.url;
+
+            const tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = 'token_ws';
+            tokenInput.value = paymentData.token;
+
+            webpayForm.appendChild(tokenInput);
+            document.body.appendChild(webpayForm);
+            webpayForm.submit();
+          } else {
+            throw new Error(paymentData.error || 'Error al procesar pago');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert(`Error: ${error instanceof Error ? error.message : 'Intenta nuevamente'}`);
+          button.textContent = 'PROCEDER AL PAGO';
+          button.removeAttribute('disabled');
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('checkout-form') as HTMLFormElement;
+        if (form) {
+          form.addEventListener('submit', handleCheckout);
+        }
+
+        // Manejo del modal de términos
+        const btnTerminos = document.getElementById('btn-terminos');
+        const modalTerminos = document.getElementById('modal-terminos') as HTMLDialogElement;
+        const btnCerrarTerminos = document.getElementById('btn-cerrar-terminos');
+
+        if (btnTerminos && modalTerminos) {
+          btnTerminos.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalTerminos.showModal();
+          });
+        }
+
+        if (btnCerrarTerminos && modalTerminos) {
+          btnCerrarTerminos.addEventListener('click', () => {
+            modalTerminos.close();
+          });
+        }
+
+        // Cerrar modal al hacer clic afuera
+        if (modalTerminos) {
+          modalTerminos.addEventListener('click', (e) => {
+            if (e.target === modalTerminos) {
+              modalTerminos.close();
+            }
+          });
+        }
+      });
+    </script>
+
+    <!-- Modal de Términos y Condiciones -->
+    <dialog id="modal-terminos" class="rounded-lg shadow-lg p-0 max-w-2xl w-11/12">
+      <div class="bg-white p-8 max-h-[80vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-[#989086]">Términos y Condiciones</h2>
+          <button type="button" id="btn-cerrar-terminos" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+        </div>
+
+        <div class="text-[#989086] text-sm leading-relaxed space-y-4">
+          <p>Bienvenido(a) a Pilates Malú Pérez. Los Términos y Condiciones que te mostraremos a continuación regulan el acceso en Chile a nuestro sitio www.pilatesmaluperez.cl y su uso por parte de todos los usuarios o consumidores. En este sitio podrás usar,  con costo asociado, para la asistencia y/o participación en el Estudio ubicado en Nueva Costanera 3900, Vitacura, local 2056B, además de productos o servicios que se encuentren en la web.Te recomendamos leerlos atentamente para que sepas en qué consisten y no tengas dudas luego de navegar o comprar con nosotros.</p>
+
+          <p>Estos Términos y Condiciones aplicarán y se entenderán incorporados en todas las compras que contrates con Pilates Malú Pérez. Mediante los sistemas de comercialización comprendidos en este sitio web. Esos contratos, el uso del sitio y la aplicación de estos Términos y Condiciones están sujetos a las leyes de la República de Chile; especialmente las que protegen los derechos de los consumidores, sin renunciar a los derechos y acciones que otorgan estas leyes. En consecuencia, gozarás de todos los derechos que reconoce la ley chilena y los que te otorgan estos términos y condiciones.</p>
+
+          <p>En nuestro sitio podrás acceder a información de clases, planes, servicios y contacto. El objetivo es facilitar el acceso e incrementar los beneficios de uso, que pueden variar periódicamente, sin afectar, en caso alguno los derechos adquiridos por los consumidores.Pilates Malú Pérez aplicará estrictamente todos los beneficios y garantías que la Ley sobre Protección de los Derechos de los Consumidores establece para las transacciones que se realizan a través de su sitio. Adicionalmente, www.pilatesmaluperez.cl adhiere en todas sus partes el Código de Buenas Prácticas para el Comercio Electrónico de la Cámara de Comercio de Santiago.</p>
+
+          <p>También, contamos con todas las leyes y normas de protección de datos al usuario.
+Cualquier duda o consulta contactar a hola@pilatesmaluperez.cl</p>
+
+          <p>No se realizará devolución de dinero por problemáticas del usuarios ni situaciones externas a los servicios propios de Pilates Malú Pérez</p>
+
+          <p>Congelamiento exclusivo en planes Trimestrales o de mayor tiempo.</p>
+
+          <p>Las consecuencias/derivaciones y acciones que se obtengan por resultado de los servicios entregados por Pilates Malú Pérez son 100% responsabilidad del usuario y/o consumidor y en ningún caso son estipulables de dolo.</p>
+
+          <p>Reiteramos nuestro compromiso con tus datos, por lo cual, te informamos de tus derechos respecto al tema:
+Puedes revocar en cualquier momento la autorización que entregas para tratar tus Datos Personales, en cuyo caso es posible que no puedas utilizar alguno o todos los servicios o beneficios que ofrece Pilates Malú Pérez. Es tu derecho pedirnos información sobre los Datos Personales tuyos que hayamos recolectado y ejercer tus derechos de rectificación, cancelación, oposición. y todos los demás derechos que confiere la Ley N° 19.628 sobre Protección de la Vida Privada. Para ejercer estos derechos sólo deberás contactarnos a hola@pilatesmaluperez.cl</p>
+
+          <p class="font-semibold">¡En Pilates Malú Pérez eres lo más importante!!</p>
+        </div>
+      </div>
+    </dialog>
+  </main>
+</Layout>
+
+<style>
+  dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  dialog {
+    border: none;
+    margin: auto;
+  }
+</style>

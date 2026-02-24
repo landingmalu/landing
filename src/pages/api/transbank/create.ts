@@ -33,12 +33,12 @@ export const POST: APIRoute = async ({ request }) => {
     );
 
     const body = await request.json();
-    const { amount, orderId } = body;
+    const { amount, orderId, clienteId } = body;
 
     // Generar orden de compra única (máximo 26 caracteres permitido por Transbank)
     const timestamp = Date.now().toString().slice(-10); // Últimos 10 dígitos
-    const buyOrder = orderId ? `ORD${timestamp}` : `ORD${timestamp}`;
-    const sessionId = `S${timestamp}`;
+    const buyOrder = clienteId || orderId || `ORD${timestamp}`;
+    const sessionId = clienteId || `S${timestamp}`;
     
     // URLs de retorno
     const returnUrl = `${baseUrl}/api/transbank/confirm`;

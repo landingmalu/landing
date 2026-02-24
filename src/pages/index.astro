@@ -6,52 +6,9 @@ import LagreeFitness from '../components/LagreeFitness.astro';
 <Layout>
 	<main class="min-h-screen w-full">
 		<script>
-			async function handleCompra() {
-				const button = document.getElementById('btn-comprar');
-				if (!button) return;
-
-				// Deshabilitar botón y mostrar loading
-				button.textContent = 'Procesando...';
-				button.setAttribute('disabled', 'true');
-
-				try {
-					// Crear transacción con Transbank
-					const response = await fetch('/api/transbank/create', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify({
-							amount: 369990,
-							orderId: `PKT${Date.now().toString().slice(-10)}`
-						})
-					});
-
-					const data = await response.json();
-
-					if (data.success && data.url && data.token) {
-						// Crear formulario para redireccionar a Webpay
-						const form = document.createElement('form');
-						form.method = 'POST';
-						form.action = data.url;
-
-						const input = document.createElement('input');
-						input.type = 'hidden';
-						input.name = 'token_ws';
-						input.value = data.token;
-
-						form.appendChild(input);
-						document.body.appendChild(form);
-						form.submit();
-					} else {
-						throw new Error(data.error || 'Error al procesar el pago');
-					}
-				} catch (error) {
-					console.error('Error:', error);
-					alert('Ocurrió un error al procesar el pago. Por favor, intenta nuevamente.');
-					button.textContent = 'COMPRAR';
-					button.removeAttribute('disabled');
-				}
+			// Redirigir a la página de compra
+			function handleCompra() {
+				window.location.href = '/comprar';
 			}
 
 			// Agregar evento al botón cuando el DOM esté listo
@@ -309,33 +266,55 @@ import LagreeFitness from '../components/LagreeFitness.astro';
 			</div>
 		</section>
 
-		<!-- Footer Section -->
-		<section class="bg-[#A1998D] w-full py-12 md:py-16">
-			<div class="max-w-7xl mx-auto px-4">
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-					<!-- Logo -->
-					<div class="flex justify-center md:justify-start">
-						<img src="/fonts/Logo-Malu-Perez-Final-Footer.png" alt="Malú Pérez" class="h-24 md:h-32 w-auto object-contain" />
-					</div>
+			 <!-- Footer Section -->
+			 <footer class="bg-[#A1998D] w-full py-10">
+				 <div class="max-w-7xl mx-auto px-4">
+					 <div class="flex flex-row items-center justify-between flex-nowrap gap-8" style="min-height:120px">
+						 <!-- Logo -->
+						 <div class="flex-shrink-0 flex items-center justify-center" style="min-width:120px">
+               <img src="/fonts/Logo-Malu-Perez-Final-Footer.png" alt="Malú Pérez" class="h-24 w-24 object-contain rounded-full bg-[#A1998D] p-2 border-0" />
+						 <!-- Instagram -->
+						 <div class="flex flex-col items-center flex-grow text-center">
+							 <svg class="w-12 h-12 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								 <rect width="20" height="20" x="2" y="2" rx="5" stroke="currentColor" stroke-width="2"/>
+								 <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+								 <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/>
+							 </svg>
+							 <span class="text-white font-light">Síguenos en</span>
+							 <span class="text-white font-semibold">@pilatesmaluperez</span>
+						 </div>
 
-					<!-- Instagram -->
-					<div class="flex flex-col items-center">
-						<svg class="w-12 h-12 text-white mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 11.25v7.687c0 1.035-.84 1.875-1.875 1.875H4.875C3.84 20.812 3 19.972 3 18.937V11.25m18 0c0-1.035-.84-1.875-1.875-1.875h-15C3.84 9.375 3 10.215 3 11.25m18 0L12 15.469l-9-4.219" />
-						</svg>
-						<p class="text-white text-center font-light">Síguenos en<br><span class="font-semibold">@pilatesmaluperez</span></p>
-					</div>
-
-					<!-- Location -->
-					<div class="flex flex-col items-center md:items-end">
-						<svg class="w-12 h-12 text-white mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-						</svg>
-						<p class="text-white text-center md:text-right font-light">Mall Casa Costanera,<br>Av. Nueva Costanera 3900,<br>Vitacura, 3er Piso</p>
-					</div>
-				</div>
-			</div>
-		</section>
+						 <!-- Location -->
+						 <div class="flex flex-col items-end flex-shrink-0 text-right" style="min-width:220px">
+							 <svg class="w-12 h-12 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+								 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+							 </svg>
+							 <span class="text-white font-light">Mall Casa Costanera,</span>
+							 <span class="text-white font-light">Av. Nueva Costanera 3900,</span>
+							 <span class="text-white font-light">Vitacura, 3er Piso</span>
+						 </div>
+					 </div>
+				 </div>
+				 <style>
+					 @media (max-width: 900px) {
+						 footer .flex-row { gap: 2rem; }
+						 footer .flex-col { font-size: 0.95rem; }
+					 }
+					 @media (max-width: 700px) {
+						 footer .flex-row { gap: 1rem; }
+						 footer .flex-col { font-size: 0.9rem; }
+						 footer .w-12, footer .h-12 { width: 2.5rem; height: 2.5rem; }
+						 footer .h-24, footer .w-24 { height: 4rem; width: 4rem; }
+					 }
+					 @media (max-width: 600px) {
+						 footer .flex-row { gap: 0.5rem; }
+						 footer .flex-col { font-size: 0.85rem; }
+						 footer .h-24, footer .w-24 { height: 3rem; width: 3rem; }
+						 footer .w-12, footer .h-12 { width: 2rem; height: 2rem; }
+						 footer .flex-col span { font-size: 0.8rem; }
+					 }
+				 </style>
+			 </footer>
 	</main>
 </Layout>

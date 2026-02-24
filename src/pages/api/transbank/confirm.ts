@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { supabase } from '../../lib/supabase';
 
 export const POST: APIRoute = async ({ request, redirect, url }) => {
   try {
@@ -45,6 +46,27 @@ export const POST: APIRoute = async ({ request, redirect, url }) => {
     // Verificar si la transacción fue aprobada
     if (response.response_code === 0) {
       console.log('[CONFIRM] Transacción APROBADA');
+      
+      // Actualizar estado en la BD
+      const clienteId = response.buy_order;
+      if (clienteId) {
+        const { error: updateError } = await supabase
+          .from('clientes')
+          .update({
+            estado: 'pagado',
+            buy_order: response.buy_order,
+            auth_code: response.authorization_code,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', clienteId);
+
+        if (updateError) {
+          console.error('[CONFIRM] Error al actualizar cliente:', updateError);
+        } else {
+          console.log('[CONFIRM] Cliente actualizado a "pagado"');
+        }
+      }
+      
       // Transacción exitosa
       return redirect(
         `/pago-exitoso?` +
@@ -54,6 +76,23 @@ export const POST: APIRoute = async ({ request, redirect, url }) => {
       );
     } else {
       console.log('[CONFIRM] Transacción RECHAZADA, código:', response.response_code);
+      
+      // Actualizar estado a cancelado en la BD
+      const clienteId = response.buy_order;
+      if (clienteId) {
+        const { error: updateError } = await supabase
+          .from('clientes')
+          .update({
+            estado: 'cancelado',
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', clienteId);
+
+        if (updateError) {
+          console.error('[CONFIRM] Error al actualizar cliente:', updateError);
+        }
+      }
+      
       // Transacción rechazada
       return redirect(
         `/pago-error?` +
@@ -112,6 +151,27 @@ export const GET: APIRoute = async ({ redirect, url }) => {
     // Verificar si la transacción fue aprobada
     if (response.response_code === 0) {
       console.log('[CONFIRM] Transacción APROBADA');
+      
+      // Actualizar estado en la BD
+      const clienteId = response.buy_order;
+      if (clienteId) {
+        const { error: updateError } = await supabase
+          .from('clientes')
+          .update({
+            estado: 'pagado',
+            buy_order: response.buy_order,
+            auth_code: response.authorization_code,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', clienteId);
+
+        if (updateError) {
+          console.error('[CONFIRM] Error al actualizar cliente:', updateError);
+        } else {
+          console.log('[CONFIRM] Cliente actualizado a "pagado"');
+        }
+      }
+      
       return redirect(
         `/pago-exitoso?` +
         `amount=${response.amount}` +
@@ -120,6 +180,23 @@ export const GET: APIRoute = async ({ redirect, url }) => {
       );
     } else {
       console.log('[CONFIRM] Transacción RECHAZADA, código:', response.response_code);
+      
+      // Actualizar estado a cancelado en la BD
+      const clienteId = response.buy_order;
+      if (clienteId) {
+        const { error: updateError } = await supabase
+          .from('clientes')
+          .update({
+            estado: 'cancelado',
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', clienteId);
+
+        if (updateError) {
+          console.error('[CONFIRM] Error al actualizar cliente:', updateError);
+        }
+      }
+      
       return redirect(
         `/pago-error?` +
         `code=${response.response_code}` +
