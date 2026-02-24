@@ -1,0 +1,371 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+  <main class="min-h-screen w-full bg-white">
+    <!-- Header -->
+    <div class="bg-[#989086] h-20 md:h-28 flex items-center justify-between px-8">
+      <img src="/fonts/Logo-Malu-Perez-Final.png" alt="Malú Pérez Pilates" class="h-32 md:h-56 w-auto object-contain" />
+      <button id="logout-btn" class="bg-white text-[#989086] px-6 py-2 rounded-full font-semibold hover:bg-[#EDE8E3] transition">
+        Cerrar Sesión
+      </button>
+    </div>
+
+    <!-- Título -->
+    <div class="w-full bg-transparent py-8">
+      <h1 class="text-center text-[#8B7E74] text-4xl md:text-5xl font-bold italic">PANEL DE ADMINISTRACIÓN</h1>
+      <p class="text-center text-[#989086] text-lg mt-2">Clientes que han realizado compras</p>
+    </div>
+
+    <!-- Estadísticas -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-[#EDE8E3] rounded-xl p-6 text-center">
+          <h3 class="text-[#989086] font-semibold mb-2">Total Clientes</h3>
+          <p id="total-clientes" class="text-4xl font-bold text-[#989086]">-</p>
+        </div>
+        <div class="bg-green-100 rounded-xl p-6 text-center">
+          <h3 class="text-green-800 font-semibold mb-2">Pagos Exitosos</h3>
+          <p id="total-pagados" class="text-4xl font-bold text-green-800">-</p>
+        </div>
+        <div class="bg-[#D4CCC3] rounded-xl p-6 text-center">
+          <h3 class="text-[#989086] font-semibold mb-2">Total Recaudado</h3>
+          <p id="total-recaudado" class="text-2xl font-bold text-[#989086]">-</p>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="bg-[#EDE8E3] rounded-xl p-6 mb-8">
+        <div class="flex flex-col md:flex-row gap-4">
+          <div class="flex-1">
+            <label for="filter-estado" class="block text-[#989086] font-semibold mb-2">Estado</label>
+            <select id="filter-estado" class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]">
+              <option value="todos">Todos</option>
+              <option value="pagado" selected>Pagado</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+          </div>
+          <div class="flex-1">
+            <label for="filter-search" class="block text-[#989086] font-semibold mb-2">Buscar</label>
+            <input
+              type="text"
+              id="filter-search"
+              class="w-full px-4 py-2 border border-[#D4CCC3] rounded-lg focus:outline-none focus:border-[#989086]"
+              placeholder="Nombre, email o teléfono..."
+            />
+          </div>
+          <div class="flex items-end">
+            <button id="export-btn" class="bg-[#989086] text-white px-6 py-2 rounded-lg hover:bg-[#B4A79D] transition font-semibold">
+              Exportar Excel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div id="loading" class="text-center py-12">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#989086]"></div>
+        <p class="text-[#989086] mt-4">Cargando clientes...</p>
+      </div>
+
+      <!-- Tabla de Clientes -->
+      <div id="clientes-container" class="hidden">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-[#989086] text-white">
+                <tr>
+                  <th class="px-4 py-3 text-left">Fecha</th>
+                  <th class="px-4 py-3 text-left">Nombre</th>
+                  <th class="px-4 py-3 text-left">Email</th>
+                  <th class="px-4 py-3 text-left">Teléfono</th>
+                  <th class="px-4 py-3 text-left">Clase</th>
+                  <th class="px-4 py-3 text-left">Monto</th>
+                  <th class="px-4 py-3 text-left">Estado</th>
+                  <th class="px-4 py-3 text-left">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="clientes-tbody" class="divide-y divide-[#DFD9D0]">
+                <!-- Se llenará con JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Sin resultados -->
+        <div id="no-results" class="hidden text-center py-12">
+          <p class="text-[#989086] text-lg">No se encontraron clientes con los filtros aplicados.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Detalles -->
+    <dialog id="modal-detalles" class="rounded-lg shadow-lg p-0 max-w-2xl w-11/12">
+      <div class="bg-white p-8 max-h-[80vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-[#989086]">Detalles del Cliente</h2>
+          <button type="button" id="btn-cerrar-modal" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+        </div>
+        <div id="modal-content" class="text-[#989086] space-y-4">
+          <!-- Se llenará con JavaScript -->
+        </div>
+      </div>
+    </dialog>
+  </main>
+</Layout>
+
+<script>
+  // Verificar autenticación
+  const token = sessionStorage.getItem('admin_token');
+  if (!token) {
+    window.location.href = '/admin/login';
+  }
+
+  let todosLosClientes: any[] = [];
+
+  // Cerrar sesión
+  document.getElementById('logout-btn')?.addEventListener('click', () => {
+    sessionStorage.removeItem('admin_token');
+    window.location.href = '/admin/login';
+  });
+
+  // Cargar clientes
+  async function cargarClientes() {
+    try {
+      const response = await fetch('/api/admin/clientes', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 401) {
+        sessionStorage.removeItem('admin_token');
+        window.location.href = '/admin/login';
+        return;
+      }
+
+      const result = await response.json();
+      
+      if (result.success) {
+        todosLosClientes = result.clientes;
+        actualizarEstadisticas(todosLosClientes);
+        aplicarFiltros();
+      }
+    } catch (error) {
+      console.error('Error al cargar clientes:', error);
+    } finally {
+      document.getElementById('loading')?.classList.add('hidden');
+      document.getElementById('clientes-container')?.classList.remove('hidden');
+    }
+  }
+
+  function actualizarEstadisticas(clientes: any[]) {
+    const totalClientes = clientes.length;
+    const totalPagados = clientes.filter((c: any) => c.estado === 'pagado').length;
+    const totalRecaudado = clientes
+      .filter((c: any) => c.estado === 'pagado')
+      .reduce((sum: number, c: any) => sum + (c.monto || 0), 0);
+
+    document.getElementById('total-clientes')!.textContent = totalClientes.toString();
+    document.getElementById('total-pagados')!.textContent = totalPagados.toString();
+    document.getElementById('total-recaudado')!.textContent = new Intl.NumberFormat('es-CL', {
+      style: 'currency',
+      currency: 'CLP'
+    }).format(totalRecaudado);
+  }
+
+  function aplicarFiltros() {
+    const estadoFiltro = (document.getElementById('filter-estado') as HTMLSelectElement).value;
+    const searchTerm = (document.getElementById('filter-search') as HTMLInputElement).value.toLowerCase();
+
+    let clientesFiltrados = todosLosClientes;
+
+    // Filtrar por estado
+    if (estadoFiltro !== 'todos') {
+      clientesFiltrados = clientesFiltrados.filter(c => c.estado === estadoFiltro);
+    }
+
+    // Filtrar por búsqueda
+    if (searchTerm) {
+      clientesFiltrados = clientesFiltrados.filter(c => 
+        c.nombre?.toLowerCase().includes(searchTerm) ||
+        c.apellidos?.toLowerCase().includes(searchTerm) ||
+        c.email?.toLowerCase().includes(searchTerm) ||
+        c.telefono?.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    renderizarClientes(clientesFiltrados);
+  }
+
+  function renderizarClientes(clientes: any[]) {
+    const tbody = document.getElementById('clientes-tbody');
+    const noResults = document.getElementById('no-results');
+
+    if (!tbody) return;
+
+    if (clientes.length === 0) {
+      tbody.innerHTML = '';
+      noResults?.classList.remove('hidden');
+      return;
+    }
+
+    noResults?.classList.add('hidden');
+
+    tbody.innerHTML = clientes.map(cliente => {
+      const fecha = new Date(cliente.created_at).toLocaleDateString('es-CL');
+      const estadoColor = cliente.estado === 'pagado' ? 'bg-green-100 text-green-800' : 
+                         cliente.estado === 'pendiente' ? 'bg-yellow-100 text-yellow-800' : 
+                         'bg-red-100 text-red-800';
+      
+      return `
+        <tr class="hover:bg-[#F5F3F0]">
+          <td class="px-4 py-3 text-sm">${fecha}</td>
+          <td class="px-4 py-3 font-semibold">${cliente.nombre} ${cliente.apellidos || ''}</td>
+          <td class="px-4 py-3 text-sm">${cliente.email}</td>
+          <td class="px-4 py-3 text-sm">${cliente.telefono}</td>
+          <td class="px-4 py-3 text-sm capitalize">${cliente.clase_seleccionada || '-'}</td>
+          <td class="px-4 py-3 font-semibold">${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(cliente.monto || 0)}</td>
+          <td class="px-4 py-3">
+            <span class="px-3 py-1 rounded-full text-xs font-semibold ${estadoColor}">
+              ${cliente.estado}
+            </span>
+          </td>
+          <td class="px-4 py-3">
+            <button onclick="verDetalles('${cliente.id}')" class="text-[#989086] hover:text-[#B4A79D] font-semibold text-sm">
+              Ver detalles
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // Ver detalles
+  (window as any).verDetalles = (id: string) => {
+    const cliente = todosLosClientes.find(c => c.id === id);
+    if (!cliente) return;
+
+    const modalContent = document.getElementById('modal-content');
+    if (!modalContent) return;
+
+    modalContent.innerHTML = `
+      <div class="grid grid-cols-2 gap-4">
+        <div><strong>Nombre completo:</strong></div>
+        <div>${cliente.nombre} ${cliente.apellidos || ''}</div>
+        
+        <div><strong>Email:</strong></div>
+        <div>${cliente.email}</div>
+        
+        <div><strong>Teléfono:</strong></div>
+        <div>${cliente.telefono}</div>
+        
+        <div><strong>País:</strong></div>
+        <div>${cliente.pais || '-'}</div>
+        
+        <div><strong>Región:</strong></div>
+        <div>${cliente.region || '-'}</div>
+        
+        <div><strong>Ciudad:</strong></div>
+        <div>${cliente.ciudad || '-'}</div>
+        
+        <div><strong>Dirección:</strong></div>
+        <div>${cliente.direccion || '-'}</div>
+        
+        <div><strong>Clase seleccionada:</strong></div>
+        <div class="capitalize">${cliente.clase_seleccionada || '-'}</div>
+        
+        <div><strong>Monto:</strong></div>
+        <div class="font-bold">${new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(cliente.monto || 0)}</div>
+        
+        <div><strong>Estado:</strong></div>
+        <div class="font-bold capitalize">${cliente.estado}</div>
+        
+        ${cliente.buy_order ? `
+          <div><strong>Orden de compra:</strong></div>
+          <div class="font-mono text-sm">${cliente.buy_order}</div>
+        ` : ''}
+        
+        ${cliente.auth_code ? `
+          <div><strong>Código autorización:</strong></div>
+          <div class="font-mono text-sm">${cliente.auth_code}</div>
+        ` : ''}
+        
+        ${cliente.notas ? `
+          <div class="col-span-2"><strong>Notas:</strong></div>
+          <div class="col-span-2">${cliente.notas}</div>
+        ` : ''}
+        
+        <div><strong>Fecha de registro:</strong></div>
+        <div>${new Date(cliente.created_at).toLocaleString('es-CL')}</div>
+      </div>
+    `;
+
+    const modal = document.getElementById('modal-detalles') as HTMLDialogElement;
+    modal?.showModal();
+  };
+
+  // Cerrar modal
+  document.getElementById('btn-cerrar-modal')?.addEventListener('click', () => {
+    const modal = document.getElementById('modal-detalles') as HTMLDialogElement;
+    modal?.close();
+  });
+
+  // Modal click outside
+  document.getElementById('modal-detalles')?.addEventListener('click', (e) => {
+    const modal = e.target as HTMLDialogElement;
+    if (e.target === modal) {
+      modal.close();
+    }
+  });
+
+  // Filtros
+  document.getElementById('filter-estado')?.addEventListener('change', aplicarFiltros);
+  document.getElementById('filter-search')?.addEventListener('input', aplicarFiltros);
+
+  // Exportar a Excel (CSV)
+  document.getElementById('export-btn')?.addEventListener('click', () => {
+    const csv = [
+      ['Fecha', 'Nombre', 'Apellidos', 'Email', 'Teléfono', 'País', 'Región', 'Ciudad', 'Dirección', 'Clase', 'Monto', 'Estado', 'Orden', 'Código Auth'].join(','),
+      ...todosLosClientes.map(c => [
+        new Date(c.created_at).toLocaleDateString('es-CL'),
+        c.nombre,
+        c.apellidos || '',
+        c.email,
+        c.telefono,
+        c.pais || '',
+        c.region || '',
+        c.ciudad || '',
+        c.direccion || '',
+        c.clase_seleccionada || '',
+        c.monto || 0,
+        c.estado,
+        c.buy_order || '',
+        c.auth_code || ''
+      ].join(','))
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `clientes_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+  });
+
+  // Inicializar
+  cargarClientes();
+</script>
+
+<style>
+  dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  dialog {
+    border: none;
+    margin: auto;
+  }
+</style>

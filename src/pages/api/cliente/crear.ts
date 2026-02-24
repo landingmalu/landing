@@ -27,7 +27,7 @@ export const POST: APIRoute = async ({ request }) => {
         direccion: clienteData.direccion || '',
         notas: clienteData.notas || '',
         clase_seleccionada: clienteData.clase_seleccionada || 'reformer',
-        monto: clienteData.monto || 369990,
+        monto: clienteData.monto || 50,
         estado: 'pendiente',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()

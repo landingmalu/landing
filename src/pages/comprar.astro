@@ -1,8 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const PACK_MENSUAL = 139990;
-const PACK_TRIMESTRAL = 369990;
+const PACK_MENSUAL = 50;
+const PACK_TRIMESTRAL = 50;
 ---
 
 <Layout>
@@ -379,7 +379,7 @@ const PACK_TRIMESTRAL = 369990;
             ciudad: formData.get('ciudad'),
             direccion: formData.get('direccion'),
             notas: formData.get('notas'),
-            monto: 369990
+            monto: 50
           };
 
           // 1. Guardar cliente en BD
@@ -402,7 +402,7 @@ const PACK_TRIMESTRAL = 369990;
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              amount: 369990,
+              amount: 50,
               orderId: clienteId,
               clienteId: clienteId
             })
