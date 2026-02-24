@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../../lib/supabase';
 
 export const POST: APIRoute = async ({ request, redirect, url }) => {
   try {
@@ -47,8 +47,8 @@ export const POST: APIRoute = async ({ request, redirect, url }) => {
     if (response.response_code === 0) {
       console.log('[CONFIRM] Transacción APROBADA');
       
-      // Actualizar estado en la BD
-      const clienteId = response.buy_order;
+      // Actualizar estado en la BD usando session_id que contiene el UUID completo
+      const clienteId = response.session_id;
       if (clienteId) {
         const { error: updateError } = await supabase
           .from('clientes')
@@ -77,8 +77,8 @@ export const POST: APIRoute = async ({ request, redirect, url }) => {
     } else {
       console.log('[CONFIRM] Transacción RECHAZADA, código:', response.response_code);
       
-      // Actualizar estado a cancelado en la BD
-      const clienteId = response.buy_order;
+      // Actualizar estado a cancelado en la BD usando session_id
+      const clienteId = response.session_id;
       if (clienteId) {
         const { error: updateError } = await supabase
           .from('clientes')
@@ -152,8 +152,8 @@ export const GET: APIRoute = async ({ redirect, url }) => {
     if (response.response_code === 0) {
       console.log('[CONFIRM] Transacción APROBADA');
       
-      // Actualizar estado en la BD
-      const clienteId = response.buy_order;
+      // Actualizar estado en la BD usando session_id
+      const clienteId = response.session_id;
       if (clienteId) {
         const { error: updateError } = await supabase
           .from('clientes')
@@ -181,8 +181,8 @@ export const GET: APIRoute = async ({ redirect, url }) => {
     } else {
       console.log('[CONFIRM] Transacción RECHAZADA, código:', response.response_code);
       
-      // Actualizar estado a cancelado en la BD
-      const clienteId = response.buy_order;
+      // Actualizar estado a cancelado en la BD usando session_id
+      const clienteId = response.session_id;
       if (clienteId) {
         const { error: updateError } = await supabase
           .from('clientes')

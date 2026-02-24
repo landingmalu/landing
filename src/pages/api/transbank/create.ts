@@ -37,7 +37,9 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Generar orden de compra única (máximo 26 caracteres permitido por Transbank)
     const timestamp = Date.now().toString().slice(-10); // Últimos 10 dígitos
-    const buyOrder = clienteId || orderId || `ORD${timestamp}`;
+    // Si clienteId es UUID, tomar solo los últimos 22 caracteres + prefijo
+    const shortId = clienteId ? clienteId.replace(/-/g, '').slice(-22) : timestamp;
+    const buyOrder = `ORD${shortId}`.slice(0, 26); // Máximo 26 caracteres
     const sessionId = clienteId || `S${timestamp}`;
     
     // URLs de retorno
