@@ -570,54 +570,36 @@ Puedes revocar en cualquier momento la autorización que entregas para tratar tu
     </dialog>
 
     <!-- Footer Section -->
-    <footer class="bg-[#A1998D] w-full py-10">
-      <div class="max-w-7xl mx-auto px-4">
-        <div class="flex flex-row items-center justify-between flex-nowrap gap-8" style="min-height:120px">
+    <footer class="bg-[#A1998D] w-full py-2 md:py-10">
+      <div class="w-full px-1 md:px-4">
+        <div class="flex flex-row items-center justify-between flex-nowrap gap-1 md:gap-8">
           <!-- Logo -->
-          <div class="flex-shrink-0 flex items-center justify-center" style="min-width:120px">
-            <img src="/fonts/Logo-Malu-Perez-Final-Footer.png" alt="Malú Pérez" class="h-24 w-24 object-contain rounded-full bg-[#A1998D] p-2 border-0" />
+          <div class="flex-shrink-0 flex items-center justify-center">
+            <img src="/fonts/Logo-Malu-Perez-Final-Footer.png" alt="Malú Pérez" class="h-12 md:h-24 w-12 md:w-24 object-contain rounded-full bg-[#A1998D] p-0.5 md:p-2 border-0" />
           </div>
           <!-- Instagram -->
-          <div class="flex flex-col items-center flex-grow text-center">
-            <svg class="w-12 h-12 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="flex flex-col items-center flex-grow text-center min-w-0">
+            <svg class="w-3.5 md:w-12 h-3.5 md:h-12 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <rect width="20" height="20" x="2" y="2" rx="5" stroke="currentColor" stroke-width="2"/>
               <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
               <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/>
             </svg>
-            <span class="text-white font-light">Síguenos en</span>
-            <span class="text-white font-semibold">@pilatesmaluperez</span>
+            <span class="text-white font-light text-[6.5px] md:text-base leading-none">Síguenos</span>
+            <span class="text-white font-semibold text-[6px] md:text-base leading-none">@pilatesmaluperez</span>
           </div>
 
           <!-- Location -->
-          <div class="flex flex-col items-end flex-shrink-0 text-right" style="min-width:220px">
-            <svg class="w-12 h-12 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="flex flex-col items-end flex-shrink-0 text-right min-w-0">
+            <svg class="w-3.5 md:w-12 h-3.5 md:h-12 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            <span class="text-white font-light">Mall Casa Costanera,</span>
-            <span class="text-white font-light">Av. Nueva Costanera 3900,</span>
-            <span class="text-white font-light">Vitacura, 3er Piso</span>
+            <span class="text-white font-light text-[5.5px] md:text-base leading-none">Mall</span>
+            <span class="text-white font-light text-[5.5px] md:text-base leading-none">Casa</span>
+            <span class="text-white font-light text-[5.5px] md:text-base leading-none">Vitacura</span>
           </div>
         </div>
       </div>
-      <style>
-        @media (max-width: 900px) {
-          footer .flex-row { gap: 2rem; }
-          footer .flex-col { font-size: 0.95rem; }
-        }
-        @media (max-width: 700px) {
-          footer .flex-row { gap: 1rem; }
-          footer .flex-col { font-size: 0.9rem; }
-          footer .w-12, footer .h-12 { width: 2.5rem; height: 2.5rem; }
-          footer .h-24, footer .w-24 { height: 4rem; width: 4rem; }
-        }
-        @media (max-width: 600px) {
-          footer .flex-row { gap: 0.5rem; }
-          footer .flex-col { font-size: 0.85rem; }
-          footer .h-24, footer .w-24 { height: 3rem; width: 3rem; }
-          footer .w-12, footer .h-12 { width: 2rem; height: 2rem; }
-          footer .flex-col span { font-size: 0.8rem; }
-        }
       </style>
     </footer>
   </main>
