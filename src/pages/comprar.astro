@@ -1,12 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const PACK_MENSUAL = 50;
-const PACK_TRIMESTRAL = 50;
+const PACK_MENSUAL = 133330;
+const PACK_TRIMESTRAL = 369990;
+const CUPOS_MAXIMOS = Number(import.meta.env.PUBLIC_CUPOS_MAX) || 20;
 ---
 
 <Layout>
-  <main class="min-h-screen w-full bg-white">
+  <main class="min-h-screen w-full bg-white" data-cupos-max={CUPOS_MAXIMOS}>
     <!-- Header -->
     <div class="bg-[#989086] h-20 md:h-28 flex items-center justify-center overflow-hidden">
       <img src="/fonts/Logo-Malu-Perez-Final.png" alt="Malú Pérez Pilates" class="h-32 md:h-56 w-auto object-contain" />
@@ -15,6 +16,16 @@ const PACK_TRIMESTRAL = 50;
     <!-- Título -->
     <div class="w-full bg-transparent py-12">
       <h1 class="text-center text-[#8B7E74] text-4xl md:text-5xl font-bold italic">FINALIZAR COMPRA</h1>
+    </div>
+
+    <!-- Alerta de cupos llenos -->
+    <div id="cupos-llenos-alert" class="hidden bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg mx-auto max-w-4xl mb-8">
+      <div class="flex items-center justify-center">
+        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+        </svg>
+        <span class="font-bold text-lg">¡Ya se llenaron los cupos disponibles!</span>
+      </div>
     </div>
 
     <!-- Progress Bar -->
@@ -209,7 +220,7 @@ const PACK_TRIMESTRAL = 50;
                 id="btn-pagar"
                 form="checkout-form"
                 type="submit"
-                class="w-full bg-[#DFD9D0] text-[#8B7E74] font-bold py-3 rounded-lg hover:bg-[#E8E4DF] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                class="w-full bg-[#DFD9D0] text-[#8B7E74] font-bold py-3 rounded-lg hover:bg-[#E8E4DF] transition disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-300"
               >
                 PROCEDER AL PAGO
               </button>
@@ -236,6 +247,45 @@ const PACK_TRIMESTRAL = 50;
     </div>
 
     <script>
+      // Función para verificar cupos disponibles
+      const CUPOS_MAXIMOS = Number(document.querySelector('main')?.getAttribute('data-cupos-max')) || 20;
+
+      async function checkCuposDisponibles(): Promise<boolean> {
+        try {
+          const response = await fetch('/api/clientes/count');
+          const data = await response.json();
+          const cuposOcupados = data.count || 0;
+          const cuposDisponibles = CUPOS_MAXIMOS - cuposOcupados;
+
+          const alertElement = document.getElementById('cupos-llenos-alert');
+          const botonPagar = document.getElementById('btn-pagar') as HTMLButtonElement;
+
+          if (cuposDisponibles <= 0) {
+            // Mostrar alerta y deshabilitar botón
+            if (alertElement) {
+              alertElement.classList.remove('hidden');
+            }
+            if (botonPagar) {
+              botonPagar.disabled = true;
+              botonPagar.textContent = 'CUPOS COMPLETOS';
+            }
+            return false;
+          } else {
+            // Ocultar alerta y habilitar botón
+            if (alertElement) {
+              alertElement.classList.add('hidden');
+            }
+            if (botonPagar) {
+              botonPagar.disabled = false;
+            }
+            return true;
+          }
+        } catch (error) {
+          console.error('Error verificando cupos:', error);
+          return true;
+        }
+      }
+
       // Función para validar un campo
       function validateField(fieldId: string, errorId: string, customValidator?: (value: string) => boolean): boolean {
         const field = document.getElementById(fieldId) as HTMLInputElement;
@@ -269,6 +319,9 @@ const PACK_TRIMESTRAL = 50;
 
       // Agregar listeners para validación en tiempo real
       document.addEventListener('DOMContentLoaded', () => {
+        // Verificar cupos disponibles
+        checkCuposDisponibles();
+
         const fields = ['nombre', 'apellidos', 'email', 'telefono', 'pais', 'direccion', 'ciudad', 'region'];
         
         fields.forEach(fieldId => {
@@ -315,6 +368,12 @@ const PACK_TRIMESTRAL = 50;
         const errorTerminos = document.getElementById('error-terminos') as HTMLElement;
 
         if (!button) return;
+
+        // Verificar cupos antes de continuar
+        const cuposDisponibles = await checkCuposDisponibles();
+        if (!cuposDisponibles) {
+          return;
+        }
 
         // Validar todos los campos
         let isValid = true;
@@ -379,7 +438,7 @@ const PACK_TRIMESTRAL = 50;
             ciudad: formData.get('ciudad'),
             direccion: formData.get('direccion'),
             notas: formData.get('notas'),
-            monto: 50
+            monto: 369990
           };
 
           // 1. Guardar cliente en BD
@@ -390,6 +449,14 @@ const PACK_TRIMESTRAL = 50;
           });
 
           const clienteResult = await clienteResponse.json();
+
+          if (clienteResponse.status === 409) {
+            // Cupos completos
+            await checkCuposDisponibles();
+            button.textContent = 'CUPOS COMPLETOS';
+            button.setAttribute('disabled', 'true');
+            return;
+          }
 
           if (!clienteResult.success) {
             throw new Error(clienteResult.error || 'Error al guardar datos');
@@ -402,7 +469,7 @@ const PACK_TRIMESTRAL = 50;
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              amount: 50,
+              amount: 369990,
               orderId: clienteId,
               clienteId: clienteId
             })

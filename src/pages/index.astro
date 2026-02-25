@@ -1,14 +1,52 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import LagreeFitness from '../components/LagreeFitness.astro';
+
+const CUPOS_MAXIMOS = Number(import.meta.env.PUBLIC_CUPOS_MAX) || 20;
 ---
 
 <Layout>
-	<main class="min-h-screen w-full">
+	<main class="min-h-screen w-full" data-cupos-max={CUPOS_MAXIMOS}>
 		<script>
 			// Redirigir a la página de compra
 			function handleCompra() {
 				window.location.href = '/comprar';
+			}
+
+			// Verificar cupos disponibles
+			async function checkCuposDisponibles() {
+				try {
+					const response = await fetch('/api/clientes/count');
+					const data = await response.json();
+					const cuposOcupados = data.count || 0;
+					const cuposMaximos = Number(document.querySelector('main')?.getAttribute('data-cupos-max')) || 20;
+					const cuposDisponibles = cuposMaximos - cuposOcupados;
+
+					const alertElement = document.getElementById('cupos-llenos-alert');
+					const button = document.getElementById('btn-comprar');
+
+					if (cuposDisponibles <= 0) {
+						if (alertElement) {
+							alertElement.classList.remove('hidden');
+						}
+						if (button) {
+							button.setAttribute('disabled', 'true');
+							button.classList.add('line-through', 'opacity-60', 'cursor-not-allowed');
+							button.textContent = 'CUPOS COMPLETOS';
+						}
+					} else {
+						if (alertElement) {
+							alertElement.classList.add('hidden');
+						}
+						if (button) {
+							button.removeAttribute('disabled');
+							button.classList.remove('line-through', 'opacity-60', 'cursor-not-allowed');
+							button.textContent = 'COMPRAR';
+						}
+					}
+				} catch (error) {
+					console.error('Error verificando cupos:', error);
+				}
 			}
 
 			// Agregar evento al botón cuando el DOM esté listo
@@ -17,6 +55,8 @@ import LagreeFitness from '../components/LagreeFitness.astro';
 				if (button) {
 					button.addEventListener('click', handleCompra);
 				}
+
+				checkCuposDisponibles();
 			});
 		</script>
 			<!-- Header Section with Logo -->
@@ -55,8 +95,11 @@ import LagreeFitness from '../components/LagreeFitness.astro';
 					</ul>
 
 					</div>
-					<div class="mt-6">
+					<div class="mt-6 flex flex-col items-center">
 						<button id="btn-comprar" class="bg-[#989086] text-white font-bold text-base md:text-lg px-6 md:px-10 py-2 rounded-full hover:bg-[#B4A79D] transition disabled:opacity-50 disabled:cursor-not-allowed">COMPRAR</button>
+						<div id="cupos-llenos-alert" class="hidden mt-4 text-red-600 text-center">
+							<span class="font-bold">¡Ya se llenaron los cupos disponibles!</span>
+						</div>
 					</div>
 				</div>
 		</section>

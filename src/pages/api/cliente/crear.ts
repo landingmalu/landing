@@ -5,6 +5,31 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const clienteData = await request.json() as Partial<Cliente>;
 
+    const cuposMaximos = Number(
+      process.env.PUBLIC_CUPOS_MAX || import.meta.env.PUBLIC_CUPOS_MAX || 20
+    );
+
+    // Validar cupos disponibles antes de crear
+    const { count: cuposOcupados, error: countError } = await supabase
+      .from('clientes')
+      .select('*', { count: 'exact', head: true })
+      .eq('estado', 'pagado');
+
+    if (countError) {
+      console.error('Error contando cupos:', countError);
+      return new Response(
+        JSON.stringify({ success: false, error: 'Error al validar cupos' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if ((cuposOcupados || 0) >= cuposMaximos) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Cupos completos' }),
+        { status: 409, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Validar datos requeridos
     if (!clienteData.nombre || !clienteData.email || !clienteData.telefono) {
       return new Response(
@@ -27,7 +52,7 @@ export const POST: APIRoute = async ({ request }) => {
         direccion: clienteData.direccion || '',
         notas: clienteData.notas || '',
         clase_seleccionada: clienteData.clase_seleccionada || 'reformer',
-        monto: clienteData.monto || 50,
+        monto: clienteData.monto || 369990,
         estado: 'pendiente',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
