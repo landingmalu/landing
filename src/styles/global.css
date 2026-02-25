@@ -38,35 +38,37 @@ body {
 	}
 
 	.two-col-grid > .col-span-1 {
-		height: 12rem; /* matches Tailwind's h-48 used in the markup */
+		min-height: 12rem; /* minimum height but allow to grow */
+		height: auto; /* allow height to adjust to content */
 		display: flex;
 		align-items: flex-start; /* ensure text starts below any overlapping header */
-		padding-left: 0.5rem;
-		padding-right: 0.5rem;
-		padding-top: 0.6rem; /* extra top padding to avoid being cut by header */
+		padding-left: 0.4rem;
+		padding-right: 0.4rem;
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;
 	}
 
 	.two-col-grid img {
 		object-fit: cover;
-		height: 12rem; /* keep image height consistent on mobile */
+		min-height: 12rem; /* minimum height but allow to grow */
+		height: auto; /* allow height to adjust to content */
 	}
 
 	/* Responsive font that scales down as the viewport gets smaller.
 	   The clamp ensures it won't get too small or too large. */
 	.two-col-grid p {
 		margin: 0;
-		line-height: 1.18;
-		/* Reduce font more aggressively so the full paragraph fits inside image height
-		   instead of being truncated. The viewport unit helps scale with screen width. */
-		font-size: clamp(8px, 2.2vw, 12px);
-		/* ensure text is visible and doesn't get hidden behind the header */
+		line-height: 1.1;
+		/* Letra mucho más pequeña para que quepa todo el texto */
+		font-size: clamp(5.5px, 1.6vw, 9px);
+		/* ensure text is visible and doesn't get hidden */
 		max-height: none;
 		overflow: visible;
 		display: block;
 		word-break: break-word;
 		hyphens: auto;
 		padding-top: 0;
-		padding-bottom: 0.2rem;
+		padding-bottom: 0;
 	}
 }
 
