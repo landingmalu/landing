@@ -58,9 +58,9 @@ body {
 	   The clamp ensures it won't get too small or too large. */
 	.two-col-grid p {
 		margin: 0;
-		line-height: 1.1;
-		/* Letra mucho más pequeña para que quepa todo el texto */
-		font-size: clamp(5.5px, 1.6vw, 9px);
+		line-height: 1.05;
+		/* Letra extremadamente pequeña para que el párrafo sea del porte de la imagen */
+		font-size: clamp(4px, 1.2vw, 7px);
 		/* ensure text is visible and doesn't get hidden */
 		max-height: none;
 		overflow: visible;
