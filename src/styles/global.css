@@ -59,8 +59,8 @@ body {
 	.two-col-grid p {
 		margin: 0;
 		line-height: 1.05;
-		/* Letra extremadamente pequeña para que el párrafo sea del porte de la imagen */
-		font-size: clamp(4px, 1.2vw, 7px);
+		/* Letra pequeña pero legible para pantallas pequeñas */
+		font-size: clamp(12px, 3vw, 14px);
 		/* ensure text is visible and doesn't get hidden */
 		max-height: none;
 		overflow: visible;
