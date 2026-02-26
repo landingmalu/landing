@@ -21,6 +21,7 @@ export const POST: APIRoute = async ({ request, redirect, url }) => {
       console.error('[CONFIRM] Credenciales de Transbank no configuradas');
       return redirect('/pago-error?error=config_error');
     }
+    
 
     // Crear instancia de Transaction con las opciones correctas
     const tx = new WebpayPlus.Transaction(
