@@ -72,6 +72,13 @@ body {
 	}
 }
 
+/* Para pantallas medianas y grandes, ajustar el tamaño de fuente de los párrafos */
+@media (min-width: 1024px) {
+	.two-col-grid p {
+		font-size: 16px;
+		line-height: 1.6;
+	}
+
 /* Horarios tables that scale like an image - entire table scales proportionally */
 .horarios-wrapper {
 	width: 100%;
