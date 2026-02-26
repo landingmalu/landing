@@ -30,7 +30,7 @@ body {
 }
 
 /* For very small screens, slightly reduce text size and paddings so content fits better */
-@media (max-width: 640px) {
+@media (max-width: 480px) {
 	/* Keep the two-column layout but force both column cells to the same height
 	   so the paragraph block matches the image height on mobile */
 	.two-col-grid {
@@ -69,6 +69,15 @@ body {
 		hyphens: auto;
 		padding-top: 0;
 		padding-bottom: 0;
+	}
+}
+
+/* Para pantallas de 481px a 768px */
+@media (min-width: 481px) and (max-width: 768px) {
+	.two-col-grid p {
+		font-size: 14px;
+		line-height: 1.4;
+		margin: 0;
 	}
 }
 
