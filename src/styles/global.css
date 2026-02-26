@@ -29,6 +29,13 @@ body {
 	grid-template-columns: repeat(2, 1fr) !important;
 }
 
+/* Keep words intact in the two-column descriptive paragraphs */
+.two-col-grid p {
+	overflow-wrap: normal !important;
+	word-break: normal !important;
+	hyphens: none !important;
+}
+
 /* For very small screens, slightly reduce text size and paddings so content fits better */
 @media (max-width: 480px) {
 	/* Keep the two-column layout but force both column cells to the same height
@@ -65,8 +72,6 @@ body {
 		max-height: none;
 		overflow: visible;
 		display: block;
-		word-break: break-word;
-		hyphens: auto;
 		padding-top: 0;
 		padding-bottom: 0;
 	}
