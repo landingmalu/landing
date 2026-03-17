@@ -3,11 +3,20 @@ import { supabase, type Cliente } from '../../../lib/supabase';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const clienteData = await request.json() as Partial<Cliente>;
+    type CheckoutPayload = Partial<Cliente> & {
+      pack?: 'preventa-1' | 'preventa-2';
+    };
 
-    const cuposMaximos = Number(
-      process.env.PUBLIC_CUPOS_MAX || import.meta.env.PUBLIC_CUPOS_MAX || 20
+    const clienteData = await request.json() as CheckoutPayload;
+
+    const preventa1Max = Number(
+      process.env.PUBLIC_PREVENTA_1_MAX || import.meta.env.PUBLIC_PREVENTA_1_MAX || 50
     );
+    const preventa2Max = Number(
+      process.env.PUBLIC_PREVENTA_2_MAX || import.meta.env.PUBLIC_PREVENTA_2_MAX || 70
+    );
+    const selectedPack = clienteData.pack === 'preventa-1' ? 'preventa-1' : 'preventa-2';
+    const cuposMaximos = selectedPack === 'preventa-1' ? preventa1Max : preventa2Max;
 
     // Validar cupos disponibles antes de crear
     const { count: cuposOcupados, error: countError } = await supabase
@@ -25,7 +34,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     if ((cuposOcupados || 0) >= cuposMaximos) {
       return new Response(
-        JSON.stringify({ success: false, error: 'Cupos completos' }),
+        JSON.stringify({ success: false, error: `${selectedPack} agotada` }),
         { status: 409, headers: { 'Content-Type': 'application/json' } }
       );
     }
